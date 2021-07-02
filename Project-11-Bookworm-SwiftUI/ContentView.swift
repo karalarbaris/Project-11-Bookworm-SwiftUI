@@ -8,26 +8,32 @@
 import SwiftUI
 import CoreData
 
-//Using size classes with AnyView type erasure
+//Creating books with Core Data
 
 struct ContentView: View {
     
-    @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(entity: Book.entity(), sortDescriptors: []) var books: FetchedResults<Book>
+    
+    @State private var showingAddScreen = false
+    
     
     var body: some View {
-        if sizeClass == .compact {
-            return AnyView(VStack {
-                Text("Active size class:")
-                Text("COMPACT")
-            }
-            .font(.largeTitle))
-        } else {
-            return AnyView(HStack {
-                Text("Active size class:")
-                Text("REGULAR")
-            }
-            .font(.largeTitle))
+        
+        NavigationView {
+            Text("Count: \(books.count)")
+                .navigationBarTitle("Book Worm")
+                .navigationBarItems(trailing: Button(action: {
+                    showingAddScreen.toggle()
+                }, label: {
+                    Image(systemName: "plus")
+                }))
+                .sheet(isPresented: $showingAddScreen) {
+                    AddBookView().environment(\.managedObjectContext, moc)
+                }
         }
+        
+        
         
     }
     
@@ -38,6 +44,37 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
+////Using size classes with AnyView type erasure
+//
+//struct ContentView: View {
+//
+//    @Environment(\.horizontalSizeClass) var sizeClass
+//
+//    var body: some View {
+//        if sizeClass == .compact {
+//            return AnyView(VStack {
+//                Text("Active size class:")
+//                Text("COMPACT")
+//            }
+//            .font(.largeTitle))
+//        } else {
+//            return AnyView(HStack {
+//                Text("Active size class:")
+//                Text("REGULAR")
+//            }
+//            .font(.largeTitle))
+//        }
+//
+//    }
+//
+//}
+//
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}
 
 //Creating a custom component with @Binding
 
