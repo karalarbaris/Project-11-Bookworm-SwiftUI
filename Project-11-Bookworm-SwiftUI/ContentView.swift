@@ -22,6 +22,7 @@ struct ContentView: View {
         
         NavigationView {
             Text("Count: \(books.count)")
+                
                 .navigationBarTitle("Book Worm")
                 .navigationBarItems(trailing: Button(action: {
                     showingAddScreen.toggle()
