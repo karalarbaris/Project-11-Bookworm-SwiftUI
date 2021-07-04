@@ -26,10 +26,12 @@ struct RatingView: View {
     var body: some View {
         
         HStack {
-            Text(label)
+            if label.isEmpty == false {
+                Text(label)
+            }
             
             ForEach(1..<maximumRating+1) { number in
-                Image(systemName: "star.fill")
+                image(for: number)
                     .foregroundColor(number > rating ? offColor : onColor)
                     .onTapGesture {
                         rating = number
