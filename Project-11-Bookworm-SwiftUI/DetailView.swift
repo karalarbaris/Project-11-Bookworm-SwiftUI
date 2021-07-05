@@ -8,9 +8,16 @@
 import SwiftUI
 import CoreData
 
+//Using an alert to pop a NavigationLink programmatically
+
 struct DetailView: View {
     
     let book: Book
+    
+    @Environment(\.managedObjectContext) var moc
+    @Environment(\.presentationMode) var presentationMode
+    
+    @State private var showingDeleteAlert = false
     
     var body: some View {
         
@@ -35,7 +42,7 @@ struct DetailView: View {
                     .foregroundColor(.secondary)
                 
                 Text(book.review ?? "No review")
-                   .padding()
+                    .padding()
                 
                 RatingView(rating: .constant(Int(book.rating)))
                     .font(.largeTitle)
@@ -46,7 +53,24 @@ struct DetailView: View {
             
         }
         .navigationBarTitle(Text(book.title ?? "Unknown Book"), displayMode: .inline)
+        .navigationBarItems(trailing: Button(action: {
+            showingDeleteAlert = true
+        }, label: {
+            Image(systemName: "trash")
+        }))
+        .alert(isPresented: $showingDeleteAlert) {
+            Alert(title: Text("Delete Book"), message: Text("Are you sure? Really???"), primaryButton: .destructive(Text("Delete")) {
+                deleteBook()
+            }, secondaryButton: .cancel())
+        }
         
+    }
+    
+    func deleteBook() {
+        moc.delete(book)
+        
+        // try? self.moc.save()
+        presentationMode.wrappedValue.dismiss()
     }
 }
 
