@@ -47,6 +47,9 @@ struct DetailView: View {
                 RatingView(rating: .constant(Int(book.rating)))
                     .font(.largeTitle)
                 
+                Text("Creation date is: \(formatDate(date: book.date ?? Date()))")
+                    .padding()
+                
                 Spacer()
                 
             }
@@ -71,6 +74,12 @@ struct DetailView: View {
         
         // try? self.moc.save()
         presentationMode.wrappedValue.dismiss()
+    }
+    
+    func formatDate(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
     }
 }
 
