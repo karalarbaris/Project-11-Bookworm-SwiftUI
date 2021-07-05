@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 //Creating books with Core Data
+//Sorting fetch requests with NSSortDescriptor
 
 struct ContentView: View {
     
