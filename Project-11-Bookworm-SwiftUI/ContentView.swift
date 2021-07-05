@@ -10,6 +10,7 @@ import CoreData
 
 //Creating books with Core Data
 //Sorting fetch requests with NSSortDescriptor
+//Deleting from a Core Data fetch request
 
 struct ContentView: View {
     
@@ -41,9 +42,10 @@ struct ContentView: View {
                         
                     }
                 }
+                .onDelete(perform: deleteBooks)
             }
             .navigationBarTitle("Book Worm")
-            .navigationBarItems(trailing: Button(action: {
+            .navigationBarItems(leading: EditButton() ,trailing: Button(action: {
                 showingAddScreen.toggle()
             }, label: {
                 Image(systemName: "plus")
@@ -57,6 +59,16 @@ struct ContentView: View {
         
         
         
+    }
+ 
+    func deleteBooks(at offSets: IndexSet) {
+        for offset in offSets {
+            let book = books[offset]
+            
+            moc.delete(book)
+        }
+        
+        try? moc.save()
     }
     
 }
