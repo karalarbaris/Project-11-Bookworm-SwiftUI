@@ -30,7 +30,7 @@ struct AddBookView: View {
                     TextField("Name of the book", text: $title)
                     TextField("Author's name", text: $author)
                     
-                    Picker("Genre", selection: $genre) {
+                    Picker("Select Genre", selection: $genre) {
                         ForEach(genres, id: \.self) {
                             Text($0)
                         }
@@ -68,6 +68,7 @@ struct AddBookView: View {
                         
                     }
                 }
+                .disabled(genre == "")
                 
                 
             }
